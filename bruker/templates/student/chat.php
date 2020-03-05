@@ -10,18 +10,24 @@ if ( isset($_POST['sendMessage']) ) {
 
     $validator = new classes\Validation();
     $items = array(
-        'course' => array(
+        'lectur' => array(
             'ruleName' => 'Kurs',
             'required' => true,
             'min' => 1,
-            'max' => 1
+            'max' => 5
         ),
         'msg' => array(
             'ruleName' => 'Melding',
             'required' => true,
             'min' => 1,
             'max' => 500
-        )
+        ),
+        'course_id' => array(
+            'ruleName' => 'Kursid',
+            'required' => true,
+            'min' => 1,
+            'max' => 5
+    )
     );
 
     $inputValidation = $validator->checkUserInput($_POST, $items);
@@ -33,8 +39,9 @@ if ( isset($_POST['sendMessage']) ) {
     } else {
         $msg_sent = send_message(
             $_SESSION['user_id'],
-            filter_input(INPUT_POST, 'course', FILTER_SANITIZE_NUMBER_INT),
-            filter_input(INPUT_POST, 'msg', FILTER_SANITIZE_STRING)
+            filter_input(INPUT_POST, 'lectur', FILTER_SANITIZE_NUMBER_INT),
+            filter_input(INPUT_POST, 'msg', FILTER_SANITIZE_STRING),
+            filter_input(INPUT_POST, 'course_id', FILTER_SANITIZE_NUMBER_INT)
         );
         if ($msg_sent) {
             header('Location: ./index.php');

@@ -39,6 +39,10 @@ $courses = get_courses($_SESSION['lectur_id']);
             <label for="course_name">Emnenavn</label>
             <input name="course_name" type="text" class="form-control" id="course_name" placeholder="Emnenavn">
         </div>
+        <div class="form-group">
+            <label for="pin_code">Pinkode</label>
+            <input name="pin_code" type="number" min="1000" max="9999" class="form-control" id="pin_code" placeholder="Pinkode">
+        </div>
         <button type="submit" name="addCourse" class="btn btn-primary">Legg til emne</button>
         <a href="index.php" class="btn btn-danger">Tilbake</a>
     </form>
@@ -60,6 +64,12 @@ if(isset($_POST['addCourse'])){
             'required' => true,
             'min' => 2,
             'max' => 60
+        ),
+        'pin_code' => array(
+            'ruleName' => 'Pinkode',
+            'required' => true,
+            'min' => 4,
+            'max' => 4
         )
     );
 
@@ -77,7 +87,8 @@ if(isset($_POST['addCourse'])){
         $added = add_course(
             filter_input(INPUT_POST, 'course_code', FILTER_SANITIZE_STRING),
             filter_input(INPUT_POST, 'course_name', FILTER_SANITIZE_STRING),
-            $_SESSION['lectur_id']
+            $_SESSION['lectur_id'],
+            filter_input(INPUT_POST, 'pin_code', FILTER_SANITIZE_NUMBER_INT)
         );
 
         if($added)

@@ -48,9 +48,7 @@ if(!empty($_SERVER['HTTP_EMAIL']) && !empty($_SERVER['HTTP_PASSWORD']))
                     'year' => (int) $student->getYear(),
                 );
 
-                $success = array($student_arr);
-
-                echo json_encode($success);
+                echo json_encode($student_arr);
             }
 
             else
@@ -62,7 +60,6 @@ if(!empty($_SERVER['HTTP_EMAIL']) && !empty($_SERVER['HTTP_PASSWORD']))
         else
         {
             $error = array('Fant ingen brukere med den e-postadressen');
-
             echo json_encode($error);
         }
 

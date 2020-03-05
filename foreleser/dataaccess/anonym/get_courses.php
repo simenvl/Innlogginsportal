@@ -2,24 +2,20 @@
 
 require_once "./classes/DatabaseConnection.php";
 
-function get_messages($student)
+function get_courses()
 {
     try {
         $instance = \classes\DatabaseConnection::getInstance();
         $connection = $instance->getConnection();
 
-        $sql = 'SELECT msg_id, msg, student, answer, fname
-                FROM messages, lecturers
-                WHERE student = ?';
+        $sql = 'select id, course_code, course_name, lectur_id, pin_code from courses';
 
         $stmt = $connection->prepare($sql);
-        $stmt ->bindValue(1, $student, PDO::PARAM_INT);
 
         $stmt->execute();
         $results = $stmt->fetchAll();
 
     } catch (PDOException $e){
-        echo $e;
         return null;
     }
 

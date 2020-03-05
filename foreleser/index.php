@@ -1,6 +1,7 @@
 <?php session_start();
 
 require_once "header.php";
+require_once "./classes/DatabaseConnection.php";
 
 if(array_key_exists('logged_in', $_SESSION))
 {
@@ -18,6 +19,7 @@ else
 {
     require_once "./templates/default.php";
 }
+
 
 
 require_once "footer.php";

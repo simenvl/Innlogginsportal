@@ -109,18 +109,19 @@ class Student
 
     }
 
-    public function send_message($message)
+    public function send_message($message, $course_id)
     {
         try
         {
             $connection = self::$instance->getConnection();
 
-            $sql = 'CALL sendMessage(?,?,?)';
+            $sql = 'CALL sendMessage(?,?,?,?)';
 
             $stmt = $connection->prepare($sql);
             $stmt->bindValue(1, $this->user_id, PDO::PARAM_INT);
             $stmt->bindValue(2, $this->course, PDO::PARAM_INT);
             $stmt->bindValue(3, $message, PDO::PARAM_STR);
+            $stmt->bindValue(4, $course_id, PDO::PARAM_INT);
 
             $stmt->execute();
 
@@ -139,7 +140,7 @@ class Student
         {
             $connection = self::$instance->getConnection();
 
-            $sql = 'SELECT msg_id, msg FROM messages WHERE student = ?';
+            $sql = 'SELECT msg_id,student,lectur,msg FROM messages WHERE student = ?';
 
             $stmt = $connection->prepare($sql);
             $stmt->bindValue(1, $this->user_id, PDO::PARAM_INT);
@@ -154,7 +155,6 @@ class Student
             $this->error = true;
         }
     }
-
 
     public function get_image($lecturer)
     {
@@ -171,7 +171,7 @@ class Student
 
             $this->count = $stmt->rowCount();
 
-            $this->result = $stmt->fetchAll();
+            $this->result = $stmt->fetch();
         }
         catch (PDOException $e)
         {

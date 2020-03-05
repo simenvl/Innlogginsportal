@@ -13,13 +13,13 @@ if(!is_null($data))
 {
     $validator = new \classes\Validation();
     $items = array(
-        'user_id' => array(
+        'student' => array(
             'ruleName' => 'Bruker ID',
             'required' => true,
             'min' => 1,
             'max' => 11
         ),
-        'lectur_id' => array(
+        'lectur' => array(
             'ruleName' => 'Foreleser',
             'required' => true,
             'min' => 1,
@@ -30,6 +30,12 @@ if(!is_null($data))
             'required' => true,
             'min' => 2,
             'max' => 300
+        ),
+        'course_id' => array(
+            'ruleName' => 'id',
+            'required' => true,
+            'min' => 1,
+            'max' => 7
         )
     );
 
@@ -44,10 +50,10 @@ if(!is_null($data))
     {
         $student = new \models\Student();
 
-        $student->setUserId(filter_var($data['user_id'], FILTER_SANITIZE_NUMBER_INT));
-        $student->setCourse(filter_var($data['lectur_id'], FILTER_SANITIZE_NUMBER_INT));
+        $student->setUserId(filter_var($data['student'], FILTER_SANITIZE_NUMBER_INT));
+        $student->setCourse(filter_var($data['lectur'], FILTER_SANITIZE_NUMBER_INT));
 
-        $student->send_message(filter_var($data['msg'], FILTER_SANITIZE_STRING));
+        $student->send_message(filter_var($data['msg'], FILTER_SANITIZE_STRING), filter_var($data['course_id'], FILTER_SANITIZE_NUMBER_INT));
 
         if($student->getError())
         {
@@ -58,9 +64,10 @@ if(!is_null($data))
         {
             $message_arr = array(
                 'msg_id' => $student->getMessageId(),
-                'user_id' => $student->getUserId(),
-                'lectur_id' => $student->getCourse(),
-                'msg' => filter_var($data['msg'], FILTER_SANITIZE_STRING)
+                'student' => $student->getUserId(),
+                'lectur' => $student->getCourse(),
+                'msg' => filter_var($data['msg'], FILTER_SANITIZE_STRING),
+                'course_id' => filter_var($data['course_id'], FILTER_SANITIZE_NUMBER_INT)
             );
 
             echo json_encode($message_arr);
